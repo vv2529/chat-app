@@ -1,0 +1,19 @@
+{
+	"name": "chat-task",
+	"private": true,
+	"scripts": {
+		"concurrently": "pnpm i && concurrently --names Back,Front --prefix-colors cyan,magenta",
+		"dev-backend": "cd backend && pnpm dev",
+		"dev-frontend": "cd frontend && pnpm dev",
+		"dev": "pnpm concurrently \"pnpm dev-backend\" \"pnpm dev-frontend\"",
+		"start-backend": "cd backend && pnpm start",
+		"start-frontend": "cd frontend && pnpm start",
+		"start": "pnpm concurrently \"pnpm start-backend\" \"pnpm start-frontend\"",
+		"build-start-backend": "cd backend && pnpm build-start",
+		"build-start-frontend": "cd frontend && pnpm build-start",
+		"build-start": "pnpm concurrently \"pnpm build-start-backend\" \"pnpm build-start-frontend\""
+	},
+	"dependencies": {
+		"concurrently": "^8.2.0"
+	}
+}
