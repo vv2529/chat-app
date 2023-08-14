@@ -1,26 +1,15 @@
+import { useCurrentUser } from '../../context/current-user'
+import { formatTime } from '../../util'
 import * as Styled from './chat-body.styled'
 import { Message } from './message'
 
-const chats: { [key: string]: Chat } = {
-	ReverseBot: {
-		userId: 'ReverseBot',
-		messages: [
-			{ id: 0, content: 'Hello world!', time: '4:20 PM', userId: 'ReverseBot' },
-			{ id: 1, content: 'Hello robot', time: '4:22 PM', userId: 'Username' },
-		],
-		seen: '4:27 PM',
-		isTyping: true,
-	},
-}
-
 export const ChatBody: React.FC<
-	| { user: User; children?: JSX.Element | string | string[] }
-	| { user?: User; children: JSX.Element | string | string[] }
-> = ({ user, children }) => {
+	{ chat: Chat; children?: React.ReactNode } | { chat?: Chat; children: React.ReactNode }
+> = ({ chat, children }) => {
 	return (
 		<Styled.Body>
-			{user ? (
-				<ChatBodyWithUser user={user} />
+			{chat ? (
+				<ChatBodyWithUser chat={chat} />
 			) : (
 				<ChatBodyWithInfoText>{children}</ChatBodyWithInfoText>
 			)}
@@ -28,22 +17,22 @@ export const ChatBody: React.FC<
 	)
 }
 
-const ChatBodyWithUser: React.FC<{ user: User }> = ({ user }) => {
-	const chat = chats[user.id]
+const ChatBodyWithUser: React.FC<{ chat: Chat }> = ({ chat }) => {
+	const currentUser = useCurrentUser()
 
-	const renderedMessages = chat?.messages?.length ? (
+	const renderedMessages = chat.messages.length ? (
 		<>
-			{chat?.messages.map((msg) => (
+			{chat.messages.map((msg) => (
 				<Message
 					key={msg.id}
-					own={msg.userId !== user.id}
-					username={msg.userId === user.id ? user.name : 'Username'}
+					own={msg.userId === currentUser.id}
+					username={msg.userId === chat.id ? chat.name : currentUser.name}
 					time={msg.time}
 					content={msg.content}
 				/>
 			))}
-			{chat.seen && <Styled.SeenTime>{chat.seen}</Styled.SeenTime>}
-			{chat.isTyping && <Styled.TypingText>{user.name} is typing…</Styled.TypingText>}
+			{chat.seen && <Styled.SeenTime>{formatTime(chat.seen)}</Styled.SeenTime>}
+			{chat.isTyping && <Styled.TypingText>{chat.name} is typing…</Styled.TypingText>}
 		</>
 	) : (
 		<ChatBodyWithInfoText>Send a message to start a chat</ChatBodyWithInfoText>
@@ -52,8 +41,6 @@ const ChatBodyWithUser: React.FC<{ user: User }> = ({ user }) => {
 	return <>{renderedMessages}</>
 }
 
-const ChatBodyWithInfoText: React.FC<{ children?: JSX.Element | string | string[] }> = ({
-	children,
-}) => {
+const ChatBodyWithInfoText: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 	return <Styled.CenterText>{children}</Styled.CenterText>
 }

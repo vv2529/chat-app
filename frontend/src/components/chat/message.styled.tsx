@@ -3,6 +3,7 @@ import { COLORS, SHADOWS, SIZES } from '../../const'
 
 export const Message = styled('div')<{ $own?: boolean }>`
 	--color: ${({ $own }) => ($own ? COLORS.msgOwn : COLORS.msgOther)};
+	--divide: calc(${SIZES.message.lineHeight} + 2 * ${SIZES.gutterYsm});
 	flex-shrink: 0;
 	align-self: ${({ $own }) => ($own ? 'flex-end' : 'flex-start')};
 	position: relative;
@@ -10,7 +11,14 @@ export const Message = styled('div')<{ $own?: boolean }>`
 	margin: ${SIZES.gutterY} ${SIZES.gutterX} 0;
 	border-radius: ${SIZES.message.borderRadius};
 	box-shadow: ${SHADOWS.message};
-	background: linear-gradient(to top, #fff 0%, #fff 50%, var(--color) 50%, var(--color) 100%);
+	background: linear-gradient(
+		to bottom,
+		var(--color) 0%,
+		var(--color) var(--divide),
+		#fff var(--divide),
+		#fff 100%
+	);
+	line-height: ${SIZES.message.lineHeight};
 
 	&::after {
 		content: '';
@@ -28,6 +36,7 @@ export const Message = styled('div')<{ $own?: boolean }>`
 export const Header = styled('div')`
 	display: flex;
 	justify-content: space-between;
+	height: calc(${SIZES.message.lineHeight} + 2 * ${SIZES.gutterYsm});
 	padding: ${SIZES.gutterYsm} ${SIZES.gutterX};
 `
 

@@ -27,7 +27,7 @@ export const TypingText = styled(InfoText)`
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
-	margin-bottom: ${SIZES.gutterY};
+	margin-bottom: ${SIZES.infoText.marginBottom};
 `
 
 export const SeenTime = styled('div')`

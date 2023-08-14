@@ -1,6 +1,10 @@
 import * as Styled from './chat-header.styled'
 
-export const ChatHeader: React.FC<{ user: User }> = ({ user: { name, about, avatarURL } }) => {
+export const ChatHeader: React.FC<{ name: string; about?: string; avatarURL: string }> = ({
+	name,
+	about,
+	avatarURL,
+}) => {
 	return (
 		<Styled.Header>
 			<Styled.Picture src={avatarURL} alt={name} />

@@ -8,7 +8,7 @@ export const Router = () => {
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<ProtectedRoute auth={<Home />} noauth={<Login />} />} />
-				<Route path="/:userId" element={<ProtectedRoute auth={<Home />} />} />
+				<Route path="/:atUserId" element={<ProtectedRoute auth={<Home />} />} />
 				<Route path="/logout" element={<ProtectedRoute auth={<Logout />} />} />
 				<Route path="*" element={<NavigateToRoot />} />
 			</Routes>

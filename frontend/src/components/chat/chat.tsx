@@ -4,45 +4,45 @@ import { Controls } from './controls'
 import { ChatHeader } from './chat-header'
 import { ChatBody } from './chat-body'
 import { NavigateToRoot } from '../../router/navigation'
-import EchoBotAvatar from '../../assets/bot-avatars/EchoBot.png'
-import ReverseBotAvatar from '../../assets/bot-avatars/ReverseBot.png'
-import SpamBotAvatar from '../../assets/bot-avatars/SpamBot.png'
-import IgnoreBotAvatar from '../../assets/bot-avatars/IgnoreBot.png'
+import { useChat } from '../../context/chats'
 
-const users: User[] = [
-	{ name: 'Echo bot', about: 'aaaaa', avatarURL: EchoBotAvatar, id: 'EchoBot' },
-	{ name: 'Reverse bot', about: 'aaaaa', avatarURL: ReverseBotAvatar, id: 'ReverseBot' },
-	{ name: 'Spam bot', about: 'aaaaa', avatarURL: SpamBotAvatar, id: 'SpamBot' },
-	{ name: 'Ignore bot', about: 'aaaaa', avatarURL: IgnoreBotAvatar, id: 'IgnoreBot' },
-]
+type ParamFlag = 'ok' | 'not-found' | 'empty' | 'invalid'
+
+const useCheckParam = (atUserId?: string): [ParamFlag, string, Chat?] => {
+	const userId = atUserId?.slice(1) || ''
+	const chat = useChat(userId)
+
+	if (!atUserId) return ['empty', '']
+	if (atUserId[0] !== '@' || atUserId.length === 1) return ['invalid', '']
+
+	return chat ? ['ok', userId, chat] : ['not-found', userId]
+}
 
 export const Chat = () => {
-	const { userId } = useParams()
+	const { atUserId } = useParams()
+	const [flag, userId, chat] = useCheckParam(atUserId)
 
 	return (
 		<Styled.Chat>
-			<HandleUserId userId={userId} />
-			<Controls />
+			{chat ? (
+				<ChatWithUser chat={chat} />
+			) : flag === 'not-found' ? (
+				<ChatWithNotFound userId={userId} />
+			) : flag === 'empty' ? (
+				<ChatWithNoUser />
+			) : (
+				<NavigateToRoot />
+			)}
+			<Controls disabled={flag !== 'ok'} />
 		</Styled.Chat>
 	)
 }
 
-// Passing userId as a prop instead of directly using a hook for easier testing
-const HandleUserId: React.FC<{ userId?: string }> = ({ userId }) => {
-	if (!userId) return <ChatWithNoUser />
-
-	if (userId[0] !== '@' || userId.length === 1) return <NavigateToRoot />
-
-	userId = userId.slice(1)
-	const user = users.find((user) => user.id === userId)
-	return user ? <ChatWithUser user={user} /> : <ChatWithNotFound userId={userId} />
-}
-
-const ChatWithUser: React.FC<{ user: User }> = ({ user }) => {
+const ChatWithUser: React.FC<{ chat: Chat }> = ({ chat }) => {
 	return (
 		<>
-			<ChatHeader user={user} />
-			<ChatBody user={user} />
+			<ChatHeader name={chat.name} about={chat.about} avatarURL={chat.avatarURL} />
+			<ChatBody chat={chat} />
 		</>
 	)
 }

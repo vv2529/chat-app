@@ -1,12 +1,11 @@
-import { useGetCurrentUser } from '../hooks/auth'
+import { useCurrentUser } from '../context/current-user'
 import { NavigateToRoot } from './navigation'
 
 export const ProtectedRoute: React.FC<{ auth?: JSX.Element; noauth?: JSX.Element }> = ({
 	auth = <NavigateToRoot />,
 	noauth = <NavigateToRoot />,
 }) => {
-	const [user] = useGetCurrentUser()
+	const user = useCurrentUser()
 
-	return user?.id ? noauth : auth // for testing
-	// return user ? auth : noauth
+	return user?.id ? auth : noauth
 }

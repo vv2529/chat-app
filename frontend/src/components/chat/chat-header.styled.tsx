@@ -8,7 +8,8 @@ export const Header = styled('div')`
 `
 
 export const Picture = styled('img')`
-	height: 100%;
+	width: ${SIZES.chat.header.height};
+	height: ${SIZES.chat.header.height};
 `
 
 export const Content = styled('div')`

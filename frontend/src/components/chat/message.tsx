@@ -1,3 +1,4 @@
+import { formatTime } from '../../util'
 import * as Styled from './message.styled'
 
 export const Message: React.FC<{
@@ -10,7 +11,7 @@ export const Message: React.FC<{
 		<Styled.Message $own={own}>
 			<Styled.Header>
 				<Styled.Username>{username}</Styled.Username>
-				<Styled.Time>{time}</Styled.Time>
+				<Styled.Time>{formatTime(time)}</Styled.Time>
 			</Styled.Header>
 			<Styled.Base>{content}</Styled.Base>
 		</Styled.Message>

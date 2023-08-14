@@ -1,13 +1,15 @@
-import { Link } from 'react-router-dom'
-import { styled } from 'styled-components'
+import { NavLink } from 'react-router-dom'
+import { css, styled } from 'styled-components'
 import { COLORS, SIZES } from '../../const'
 
-export const Contact = styled(Link)<{ $active?: boolean; $online?: boolean }>`
+export const Contact = styled(NavLink)<{ $online?: boolean }>`
 	position: relative;
 	display: flex;
-	background: ${({ $active }) => ($active ? COLORS.lightBG : 'transparent')};
+	height: calc(${SIZES.contact.size} + 2 * ${SIZES.contact.paddingY});
+	/* background: ${COLORS.contactsBG}; */
 	text-decoration: none;
 
+	&.active,
 	&:hover,
 	&:focus {
 		background: ${COLORS.lightBG};
@@ -33,14 +35,35 @@ export const Picture = styled('img')`
 `
 
 export const Content = styled('div')`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: calc(100% - 2 * ${SIZES.contact.contentPaddingY});
 	margin: ${SIZES.contact.contentPaddingY} 0;
+	margin-right: ${SIZES.contact.contentPaddingRight};
+	overflow: hidden;
+`
+
+const ellipsis = css`
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 `
 
 export const Username = styled('div')`
 	color: ${COLORS.darkText};
 	font-weight: bold;
+	${ellipsis}
 `
 
 export const LastMessagePreview = styled('div')`
 	color: ${COLORS.lightText};
+	${ellipsis}
+`
+
+export const LastMessageTime = styled('div')`
+	color: ${COLORS.lightText};
+	font-size: ${SIZES.contact.timeFont};
+	text-align: right;
+	${ellipsis}
 `

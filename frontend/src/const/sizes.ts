@@ -26,9 +26,13 @@ export const SIZES = {
 	message: {
 		width: '75%',
 		borderRadius: '10px',
+		lineHeight: '1.3em',
 		tailSide: '12px',
 		seenTimePaddingTop: '5px',
 		seenTimeFont: '0.9em',
+	},
+	infoText: {
+		marginBottom: '15px',
 	},
 	controls: {
 		paddingRight: '30px',
@@ -54,6 +58,8 @@ export const SIZES = {
 		size: '60px',
 		paddingY: '5px',
 		contentPaddingY: '10px',
+		contentPaddingRight: '10px',
 		statusSize: '15px',
+		timeFont: '0.9em',
 	},
 }

@@ -13,9 +13,10 @@ type Message = {
 	userId: string
 }
 
-type Chat = {
-	userId: string
+type Chat = User & {
 	messages: Message[]
 	seen: string
 	isTyping: boolean
 }
+
+type Chats = { [key: string]: Chat }
