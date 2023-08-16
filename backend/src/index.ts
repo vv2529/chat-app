@@ -1,19 +1,12 @@
 import 'dotenv/config'
-import express from 'express'
-import cors from 'cors'
+import http from 'http'
+import { createExpressApp } from './modules/http/setup.js'
+import { setupWebsockets } from './modules/ws/setup.js'
 
 const PORT = process.env.PORT || 4200
 
-const app = express()
-app.set('port', PORT)
-app.use(
-	cors({
-		origin: process.env.CLIENT_URL,
-	})
-)
+const app = createExpressApp()
+const server = http.createServer(app)
+setupWebsockets(server)
 
-app.get('/', (req, res) => {
-	res.send('API server is running')
-})
-
-app.listen(PORT, () => console.log(`[BACKEND READY]. Server is listening on port ${PORT}…`))
+server.listen(PORT, () => console.log(`[BACKEND READY]. Server is listening on port ${PORT}…`))
