@@ -23,14 +23,20 @@ export const getChatsForClient = (users: IUsers, chats: IStoredChats, userId: st
 		Object.entries(chats)
 			.filter(([id, chat]) => chat.userIDs.includes(userId))
 			.sort(([id1, chat1], [id2, chat2]) =>
-				(chat1.messages.at(-1)?.time || '') < (chat2.messages.at(-1)?.time || '') ? -1 : 1
+				(chat1.messages.at(-1)?.time || '') > (chat2.messages.at(-1)?.time || '') ? -1 : 1
 			)
-			.map(([id, chat]) => [id, getChatForClient(users, chat, userId)])
+			.map(([id, chat]) => [
+				chat.userIDs.find((id) => id !== userId) || '',
+				getChatForClient(users, chat, userId),
+			])
 	)
 
 	const emptyChats: IChats = Object.fromEntries(
 		Object.entries(users)
-			.filter(([id, user]) => !Object.keys(existingChats).includes(id))
+			.filter(([id, user]) => !Object.keys(existingChats).includes(id) && id !== userId)
+			.sort(([id1, user1], [id2, user2]) =>
+				user1.name.toLowerCase() < user2.name.toLowerCase() ? -1 : 1
+			)
 			.map(([id, user]) => [id, getEmptyChatForClient(user)])
 	)
 
@@ -42,12 +48,16 @@ export const getChatsForClient = (users: IUsers, chats: IStoredChats, userId: st
 
 export const getChatForClient = (users: IUsers, chat: IStoredChat, userId: string): IChat => {
 	const otherIndex = chat.userIDs.findIndex((id) => id !== userId)
+	const index = 1 - otherIndex
 	const otherId = chat.userIDs[otherIndex]
 
 	return {
 		...getUserMetadata(users[otherId]),
 		messages: chat.messages,
-		seen: chat.seen[otherIndex],
+		seen: {
+			self: chat.seen[index],
+			other: chat.seen[otherIndex],
+		},
 		isTyping: chat.typingState[otherIndex].isTyping,
 	}
 }
@@ -59,7 +69,13 @@ export const getEmptyChatForClient = (user: IUser): IChat => ({
 	isTyping: false,
 })
 
-export const getEmptySeen = (): UserSeen => ({ time: '', lastSeenMessageID: -1 })
+export const getEmptySeenSingle = (): UserSeen => ({ time: '', lastSeenMessageID: -1 })
+
+export const getEmptySeen = (): ChatSeen => ({
+	self: getEmptySeenSingle(),
+	other: getEmptySeenSingle(),
+})
+
 export const getEmptyTypingState = (): UserTyping => ({ isTyping: false })
 
 export const getIndexInTuple = (userId: string, otherId: string): 0 | 1 =>

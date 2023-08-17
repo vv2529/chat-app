@@ -5,6 +5,7 @@ import { Tabs } from '@mui/base/Tabs'
 export const Contacts = styled(Tabs)`
 	all: unset;
 	width: ${SIZES.contact.width};
+	min-width: ${SIZES.contact.minWidth};
 	display: flex;
 	flex-direction: column;
 	background: ${COLORS.contactsBG};

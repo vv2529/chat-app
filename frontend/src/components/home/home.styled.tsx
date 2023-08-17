@@ -14,14 +14,21 @@ export const Header = styled('header')`
 	align-items: flex-end;
 	min-height: ${SIZES.header.height};
 	max-height: ${SIZES.header.height};
-	padding: 0 ${SIZES.marginX} ${SIZES.gutterY};
+	padding-bottom: ${SIZES.gutterY};
 	background: ${COLORS.headerBG};
 `
 
 export const HeaderTitle = styled('h1')`
+	margin-left: ${SIZES.marginX};
 	font-size: ${SIZES.header.font};
 	font-weight: 600;
 	line-height: 1;
+
+	@media (min-width: ${BREAKPOINTS.md}px) {
+		width: calc(100% - ${SIZES.marginX});
+		max-width: ${SIZES.main.maxWidth};
+		margin: 0 auto;
+	}
 `
 
 export const Main = styled('main')`

@@ -12,10 +12,11 @@ export const ContactsTabs = styled(TabsList)`
 export const ContactsTab = styled(Tab)`
 	all: unset;
 	width: 100%;
-	padding-top: ${SIZES.gutterY};
+	padding-top: ${SIZES.tab.paddingTop};
 	padding-bottom: ${SIZES.tab.paddingBottom};
 	background: ${COLORS.lightBG};
 	border: 1px solid ${COLORS.lightBorder};
+	border-top-width: 0;
 	text-align: center;
 	cursor: pointer;
 

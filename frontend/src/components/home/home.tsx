@@ -1,5 +1,6 @@
 import * as Styled from './home.styled'
 import { Chat, Contacts } from '../'
+import { OtherUserIdProvider } from '../../context/other-user'
 
 export const Home = () => {
 	return (
@@ -9,8 +10,10 @@ export const Home = () => {
 			</Styled.Header>
 			<Styled.Main>
 				<Styled.MainContainer>
-					<Chat />
-					<Contacts />
+					<OtherUserIdProvider>
+						<Chat />
+						<Contacts />
+					</OtherUserIdProvider>
 				</Styled.MainContainer>
 			</Styled.Main>
 		</Styled.Container>

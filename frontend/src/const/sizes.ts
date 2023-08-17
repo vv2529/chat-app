@@ -32,34 +32,38 @@ export const SIZES = {
 		seenTimeFont: '0.9em',
 	},
 	infoText: {
-		marginBottom: '15px',
+		marginY: '15px',
 	},
 	controls: {
 		paddingRight: '30px',
 	},
 	button: {
 		paddingX: '25px',
-		paddingY: '12px',
+		paddingY: '8px',
 		borderRadius: '5px',
 	},
 	input: {
-		paddingX: '15px',
-		paddingY: '12px',
+		paddingX: '12px',
+		paddingY: '8px',
 		borderRadius: '5px',
 	},
 	sendButton: {
-		paddingXlg: '60px',
+		paddingXlg: '50px',
+		font: '0.9em',
 	},
 	tab: {
-		paddingBottom: '10px',
+		paddingTop: '15px',
+		paddingBottom: '8px',
 	},
 	contact: {
-		width: '262px',
+		width: '23%',
+		minWidth: '200px',
 		size: '60px',
 		paddingY: '5px',
 		contentPaddingY: '10px',
 		contentPaddingRight: '10px',
 		statusSize: '15px',
+		badgeFont: '0.8em',
 		timeFont: '0.9em',
 	},
 }

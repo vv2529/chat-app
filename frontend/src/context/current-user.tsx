@@ -3,7 +3,7 @@ import { WebService } from '../services/web.service'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { STORAGE_KEYS } from '../const'
 
-const CurrentUser = createContext<User>(WebService.getEmptyUser())
+const CurrentUser = createContext<IUser>(WebService.getEmptyUser())
 const Register = createContext<() => void>(() => {})
 const Logout = createContext<() => void>(() => {})
 
@@ -12,7 +12,7 @@ export const useRegister = () => useContext(Register)
 export const useLogout = () => useContext(Logout)
 
 export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [currentUser, setCurrentUser] = useLocalStorage<User>(
+	const [currentUser, setCurrentUser] = useLocalStorage<IUser>(
 		STORAGE_KEYS.user,
 		WebService.getEmptyUser
 	)

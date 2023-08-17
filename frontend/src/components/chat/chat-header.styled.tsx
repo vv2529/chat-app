@@ -8,6 +8,7 @@ export const Header = styled('div')`
 `
 
 export const Picture = styled('img')`
+	flex-shrink: 0;
 	width: ${SIZES.chat.header.height};
 	height: ${SIZES.chat.header.height};
 `

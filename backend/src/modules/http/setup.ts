@@ -20,8 +20,8 @@ export const createExpressApp = () => {
 		res.json(generateUser())
 	})
 
-	app.get('/api/users', (req, res) => {
-		const currentUserId = req.query.userId
+	app.get('/api/chats/:currentUserId', (req, res) => {
+		const { currentUserId } = req.params
 
 		if (!currentUserId) return res.json({})
 

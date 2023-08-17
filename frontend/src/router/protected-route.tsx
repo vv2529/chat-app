@@ -7,5 +7,5 @@ export const ProtectedRoute: React.FC<{ auth?: JSX.Element; noauth?: JSX.Element
 }) => {
 	const user = useCurrentUser()
 
-	return user?.id ? auth : noauth
+	return user.id ? auth : noauth
 }

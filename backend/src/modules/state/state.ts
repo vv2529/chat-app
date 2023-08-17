@@ -3,7 +3,7 @@ import { ReverseBot } from '../bots/reverse-bot.js'
 import {
 	createNewUser,
 	getChat,
-	getEmptySeen,
+	getEmptySeenSingle,
 	getEmptyTypingState,
 	getUserIdTuple,
 	getUserIdTupleString,
@@ -53,7 +53,7 @@ export const getEmptyChat = (userId: string, otherId: string): IStoredChat => {
 	return {
 		userIDs,
 		messages: [],
-		seen: [getEmptySeen(), getEmptySeen()],
+		seen: [getEmptySeenSingle(), getEmptySeenSingle()],
 		typingState: [getEmptyTypingState(), getEmptyTypingState()],
 		nextMessageID: 0,
 	}
@@ -65,19 +65,22 @@ export const getOrCreateChat = (userId: string, otherId: string): IStoredChat =>
 	return chats[chatId]
 }
 
-export const addMessage = (chat: IStoredChat, message: string, userId: string): void => {
-	chat.messages.push({
+export const addMessage = (chat: IStoredChat, content: string, userId: string): IMessage => {
+	const message: IMessage = {
 		id: chat.nextMessageID,
-		content: message,
+		content,
 		time: new Date().toISOString(),
 		userId,
-	})
+	}
 
+	chat.messages.push(message)
 	chat.nextMessageID++
+
+	return message
 }
 
-export const markAsSeen = (chat: IStoredChat, userId: string): void => {
+export const markAsSeen = (chat: IStoredChat, userId: string, lastSeenMessageID: number): void => {
 	const index = chat.userIDs.indexOf(userId)
-	chat.seen[index].lastSeenMessageID = chat.nextMessageID - 1
+	chat.seen[index].lastSeenMessageID = lastSeenMessageID
 	chat.seen[index].time = new Date().toISOString()
 }

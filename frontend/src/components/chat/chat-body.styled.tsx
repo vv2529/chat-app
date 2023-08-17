@@ -5,29 +5,29 @@ export const Body = styled('div')`
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
+	height: 0;
 	min-height: ${SIZES.chat.minHeight};
 	padding: 0 ${SIZES.gutterX};
 	overflow-y: scroll;
 `
 
 const InfoText = styled('div')`
-	color: ${COLORS.chatInfoText};
-`
-
-export const CenterText = styled(InfoText)`
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 100%;
+	color: ${COLORS.chatInfoText};
 	user-select: none;
 `
 
-export const TypingText = styled(InfoText)`
+export const CenterText = styled(InfoText)`
+	align-items: center;
+	height: 100%;
+`
+
+export const TypingText = styled(InfoText)<{ $hidden: boolean }>`
 	flex-grow: 1;
-	display: flex;
-	justify-content: center;
 	align-items: flex-end;
-	margin-bottom: ${SIZES.infoText.marginBottom};
+	margin: ${SIZES.infoText.marginY} 0;
+	opacity: ${({ $hidden }) => ($hidden ? 0 : 1)};
 `
 
 export const SeenTime = styled('div')`

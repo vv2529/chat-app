@@ -14,7 +14,11 @@ import {
 } from '../state/state.js'
 
 export const setupWebsockets = (server: http.Server) => {
-	const io: CustomServer = new Server(server)
+	const io: CustomServer = new Server(server, {
+		cors: {
+			origin: process.env.CLIENT_URL,
+		},
+	})
 
 	io.on(CLIENT_EVENTS.connection, (socket) => {
 		socket.on(CLIENT_EVENTS.userOnline, (user) => {
@@ -52,18 +56,23 @@ export const setupWebsockets = (server: http.Server) => {
 				const chat = getOrCreateChat(user.id, otherUserId)
 
 				if (message.trim()) {
-					addMessage(chat, message, user.id)
-					socket.to(otherUserId).emit(SERVER_EVENTS.newMessage, user.id, message)
+					const addedMessage = addMessage(chat, message, user.id)
+
+					setTypingStatus(user.id, otherUserId, false)
+					markAsSeen(chat, user.id, addedMessage.id)
+
+					io.to(otherUserId).emit(SERVER_EVENTS.newMessage, user.id, addedMessage)
+					io.to(user.id).emit(SERVER_EVENTS.newMessage, otherUserId, addedMessage)
 				}
 			})
 
-			socket.on(CLIENT_EVENTS.seen, (otherUserId) => {
+			socket.on(CLIENT_EVENTS.seen, (otherUserId, lastSeenMessageID) => {
 				const chat = getChat(user.id, otherUserId)
 
 				if (chat) {
 					const index = chat.userIDs.indexOf(user.id)
-					markAsSeen(chat, user.id)
-					socket.to(otherUserId).emit(SERVER_EVENTS.seen, user.id, chat.seen[index].time)
+					markAsSeen(chat, user.id, lastSeenMessageID)
+					socket.to(otherUserId).emit(SERVER_EVENTS.seen, user.id, chat.seen[index])
 				}
 			})
 		})

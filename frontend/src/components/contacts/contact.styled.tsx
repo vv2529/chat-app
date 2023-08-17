@@ -2,6 +2,14 @@ import { NavLink } from 'react-router-dom'
 import { css, styled } from 'styled-components'
 import { COLORS, SIZES } from '../../const'
 
+const round = css`
+	position: absolute;
+	bottom: calc(${SIZES.contact.statusSize} / 4);
+	width: ${SIZES.contact.statusSize};
+	height: ${SIZES.contact.statusSize};
+	border-radius: 50%;
+`
+
 export const Contact = styled(NavLink)<{ $online?: boolean }>`
 	position: relative;
 	display: flex;
@@ -17,14 +25,22 @@ export const Contact = styled(NavLink)<{ $online?: boolean }>`
 
 	&::after {
 		content: '';
-		position: absolute;
-		bottom: calc(${SIZES.contact.statusSize} / 4);
-		left: calc(${SIZES.gutterX} / 2 + ${SIZES.contact.size} - ${SIZES.contact.statusSize} / 4);
-		width: ${SIZES.contact.statusSize};
-		height: ${SIZES.contact.statusSize};
-		border-radius: 50%;
+		${round}
+		left: calc(${SIZES.gutterX} + ${SIZES.contact.size} - ${SIZES.contact.statusSize} * 0.75);
 		background: ${({ $online }) => ($online ? COLORS.onlineStatus : COLORS.offlineStatus)};
 	}
+`
+
+export const Badge = styled('div')`
+	${round}
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	left: calc(${SIZES.gutterX} - ${SIZES.contact.statusSize} / 4);
+	background: ${COLORS.badge};
+	color: ${COLORS.badgeText};
+	font-size: ${SIZES.contact.badgeFont};
+	font-weight: bold;
 `
 
 export const Picture = styled('img')`
@@ -38,6 +54,7 @@ export const Content = styled('div')`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	width: 100%;
 	height: calc(100% - 2 * ${SIZES.contact.contentPaddingY});
 	margin: ${SIZES.contact.contentPaddingY} 0;
 	margin-right: ${SIZES.contact.contentPaddingRight};

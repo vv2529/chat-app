@@ -18,6 +18,8 @@ export const COLORS = {
 	scrollbarThumb: '#9daab9',
 	onlineStatus: '#20d63e',
 	offlineStatus: '#d6d6d6',
+	badge: '#d62020',
+	badgeText: '#fff',
 	tabText: '#555',
 	darkText: '#333',
 	lightText: '#999',

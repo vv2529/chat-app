@@ -1,13 +1,11 @@
-import { Server, Socket } from 'socket.io'
-import { CLIENT_EVENTS, SERVER_EVENTS } from './websocket.const.js'
+import { Socket } from 'socket.io-client'
+import { CLIENT_EVENTS, SERVER_EVENTS } from '../const/socket-events'
 
 type ClientToServerEvents = {
-	[CLIENT_EVENTS.connection]: (socket: Socket) => void
 	[CLIENT_EVENTS.userOnline]: (user: IUserProfile) => void
 	[CLIENT_EVENTS.startTyping]: (otherUserId: string) => void
 	[CLIENT_EVENTS.newMessage]: (otherUserId: string, message: string) => void
 	[CLIENT_EVENTS.seen]: (otherUserId: string, lastSeenMessageID: number) => void
-	[CLIENT_EVENTS.disconnect]: () => void
 }
 
 type ServerToClientEvents = {
@@ -20,4 +18,4 @@ type ServerToClientEvents = {
 	[SERVER_EVENTS.userOffline]: (userId: string) => void
 }
 
-export type CustomServer = Server<ClientToServerEvents, ServerToClientEvents, {}, { user: IUser }>
+export type CustomSocket = Socket<ServerToClientEvents, ClientToServerEvents>

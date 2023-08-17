@@ -17,6 +17,8 @@ export const MessageInput = styled('input')`
 `
 
 export const SendButton = styled('button')`
+	font-size: ${SIZES.sendButton.font};
+
 	@media (min-width: ${BREAKPOINTS.lg}px) {
 		padding: ${SIZES.input.paddingY} ${SIZES.sendButton.paddingXlg};
 	}

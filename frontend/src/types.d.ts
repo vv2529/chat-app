@@ -1,22 +1,35 @@
-type User = {
+type IUserProfile = {
 	id: string
 	name: string
 	avatarURL: string
-	about?: string
-	online?: boolean
+	about: string
 }
 
-type Message = {
+type IUser = IUserProfile & {
+	online: boolean
+}
+
+type IMessage = {
 	id: number
 	content: string
 	time: string
 	userId: string
 }
 
-type Chat = User & {
-	messages: Message[]
-	seen: string
+type IChat = IUser & {
+	messages: IMessage[]
+	seen: ChatSeen
 	isTyping: boolean
 }
 
-type Chats = { [key: string]: Chat }
+type UserSeen = {
+	time: string
+	lastSeenMessageID: number
+}
+
+type ChatSeen = {
+	self: UserSeen
+	other: UserSeen
+}
+
+type IChats = { [key: string]: IChat }

@@ -26,7 +26,7 @@ declare global {
 
 	type IChat = IUser & {
 		messages: IMessage[]
-		seen: UserSeen
+		seen: ChatSeen
 		isTyping: boolean
 	}
 
@@ -41,6 +41,11 @@ declare global {
 	type UserSeen = {
 		time: string
 		lastSeenMessageID: number
+	}
+
+	type ChatSeen = {
+		self: UserSeen
+		other: UserSeen
 	}
 
 	type UserTyping = {
