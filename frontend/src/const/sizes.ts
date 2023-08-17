@@ -6,7 +6,13 @@ export const SIZES = {
 
 	header: {
 		height: '80px',
+		marginXsm: '40px',
 		font: '2em',
+		toggle: {
+			paddingX: '10px',
+			paddingY: '5px',
+			borderRadius: '5px',
+		},
 	},
 	main: {
 		maxWidth: '1140px',
@@ -19,7 +25,9 @@ export const SIZES = {
 		minHeight: '200px',
 		header: {
 			height: '170px',
+			heightSm: '85px',
 			paddingX: '25px',
+			paddingXsm: '10px',
 			font: '1.5em',
 		},
 	},
@@ -57,10 +65,11 @@ export const SIZES = {
 	},
 	contact: {
 		width: '23%',
+		widthSm: '320px',
 		minWidth: '200px',
 		size: '60px',
 		paddingY: '5px',
-		contentPaddingY: '10px',
+		contentPaddingY: '5px',
 		contentPaddingRight: '10px',
 		statusSize: '15px',
 		badgeFont: '0.8em',

@@ -6,7 +6,7 @@ import { useChats } from '../../context/chats'
 
 type FilterType = 'online' | 'all'
 
-export const Contacts = () => {
+export const Contacts: React.FC<{ shown: boolean }> = ({ shown }) => {
 	const chats = useChats()
 	const [filter, setFilter] = useState<FilterType>('online')
 	const [search, setSearch] = useState('')
@@ -20,7 +20,11 @@ export const Contacts = () => {
 	}, [chats, filter, search])
 
 	return (
-		<Styled.Contacts value={filter} onChange={(e, newFilter) => setFilter(newFilter as FilterType)}>
+		<Styled.Contacts
+			$shown={shown}
+			value={filter}
+			onChange={(e, newFilter) => setFilter(newFilter as FilterType)}
+		>
 			<Tabs />
 			<Styled.ContactsList>
 				{shownChats.map((chat) => (

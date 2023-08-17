@@ -13,8 +13,8 @@ const round = css`
 export const Contact = styled(NavLink)<{ $online?: boolean }>`
 	position: relative;
 	display: flex;
+	width: 100%;
 	height: calc(${SIZES.contact.size} + 2 * ${SIZES.contact.paddingY});
-	/* background: ${COLORS.contactsBG}; */
 	text-decoration: none;
 
 	&.active,

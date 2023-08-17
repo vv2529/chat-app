@@ -45,9 +45,14 @@ export const Base = styled('div')`
 `
 
 export const Username = styled('div')`
+	flex-shrink: 1;
 	color: ${COLORS.msgUsername};
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 `
 
 export const Time = styled('div')`
+	flex-shrink: 0;
 	color: ${COLORS.msgTime};
 `

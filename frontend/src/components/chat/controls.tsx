@@ -49,9 +49,12 @@ export const Controls: React.FC<{ userId: string; disabled?: boolean }> = ({
 				placeholder="Start chatting!"
 				disabled={disabled}
 			/>
-			<Styled.SendButton type="submit" disabled={disabled || !canSubmit}>
-				Send message
-			</Styled.SendButton>
+			<Styled.SendButton
+				type="submit"
+				disabled={disabled || !canSubmit}
+				$contentSm="Send"
+				$contentLg="Send message"
+			/>
 		</Styled.Controls>
 	)
 }

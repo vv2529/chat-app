@@ -8,7 +8,11 @@
 		"build-start": "pnpm build && pnpm start"
 	},
 	"dependencies": {
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
 		"@mui/base": "5.0.0-beta.10",
+		"@mui/icons-material": "^5.14.3",
+		"@mui/material": "^5.14.5",
 		"@types/node": "^16.18.40",
 		"@types/react": "^18.2.20",
 		"@types/react-dom": "^18.2.7",

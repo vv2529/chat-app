@@ -16,8 +16,18 @@ export const MessageInput = styled('input')`
 	}
 `
 
-export const SendButton = styled('button')`
+export const SendButton = styled('button')<{ $contentSm: string; $contentLg: string }>`
 	font-size: ${SIZES.sendButton.font};
+
+	&::after {
+		content: '${({ $contentSm }) => $contentSm}';
+	}
+
+	@media (min-width: ${BREAKPOINTS.sm}px) {
+		&::after {
+			content: '${({ $contentLg }) => $contentLg}';
+		}
+	}
 
 	@media (min-width: ${BREAKPOINTS.lg}px) {
 		padding: ${SIZES.input.paddingY} ${SIZES.sendButton.paddingXlg};
