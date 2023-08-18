@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import { generateUser, getChatsForClient } from '../users/users.util.js'
-import { chats, users } from '../state/state.js'
+import { generateUser } from '../util/user-generation.js'
+import { getChatsForClient } from '../state/chats.js'
 
 export const createExpressApp = () => {
 	const app = express()
@@ -25,7 +25,7 @@ export const createExpressApp = () => {
 
 		if (!currentUserId) return res.json({})
 
-		res.json(getChatsForClient(users, chats, String(currentUserId)))
+		res.json(getChatsForClient(currentUserId))
 	})
 
 	return app

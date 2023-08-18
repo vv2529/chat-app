@@ -2,16 +2,15 @@ import http from 'http'
 import { Server } from 'socket.io'
 import { CLIENT_EVENTS, SERVER_EVENTS, TYPING_DURATION } from './websocket.const.js'
 import { CustomServer } from './websocket.types.js'
-import { getChat, getEmptyChatForClient } from '../users/users.util.js'
+import { registerUser, setOnlineStatus, users } from '../state/users.js'
+import { getEmptyChatForClient } from '../state/chats.util.js'
 import {
 	addMessage,
+	getChat,
 	getOrCreateChat,
 	markAsSeen,
-	registerUser,
-	setOnlineStatus,
 	setTypingStatus,
-	users,
-} from '../state/state.js'
+} from '../state/chats.js'
 
 export const setupWebsockets = (server: http.Server) => {
 	const io: CustomServer = new Server(server, {

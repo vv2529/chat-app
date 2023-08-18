@@ -1,30 +1,45 @@
-import { EchoBot } from '../bots/echo-bot.js'
-import { ReverseBot } from '../bots/reverse-bot.js'
 import {
-	createNewUser,
-	getChat,
-	getEmptySeenSingle,
-	getEmptyTypingState,
-	getUserIdTuple,
+	getChatForClient,
+	getEmptyChat,
+	getEmptyChatForClient,
 	getUserIdTupleString,
-} from '../users/users.util.js'
+} from './chats.util.js'
+import { users } from './users.js'
 
-const botsArray: IUser[] = [new EchoBot(), new ReverseBot()]
-const bots: IUsers = Object.fromEntries(botsArray.map((bot) => [bot.id, bot]))
-
-export const users: IUsers = bots
+// Do not mutate this state directly, only through actions provided below
 export const chats: IStoredChats = {}
 
-export const registerUser = (user: IUserProfile): boolean => {
-	const userCreated = !(user.id in users)
-	users[user.id] ||= createNewUser(user)
-	return userCreated
+export const getChat = (userId: string, otherId: string): IStoredChat | undefined => {
+	const chatId = getUserIdTupleString(userId, otherId)
+	return chats[chatId]
 }
 
-export const setOnlineStatus = (userId: string, online: boolean): boolean => {
-	if (!(userId in users)) return false
-	users[userId].online = online
-	return true
+export const getChatsForClient = (userId: string): IChats => {
+	const existingChats: IChats = Object.fromEntries(
+		Object.entries(chats)
+			.filter(([id, chat]) => chat.userIDs.includes(userId))
+			.sort(([id1, chat1], [id2, chat2]) =>
+				(chat1.messages.at(-1)?.time || '') > (chat2.messages.at(-1)?.time || '') ? -1 : 1
+			)
+			.map(([id, chat]) => [
+				chat.userIDs.find((id) => id !== userId) || '',
+				getChatForClient(users, chat, userId),
+			])
+	)
+
+	const emptyChats: IChats = Object.fromEntries(
+		Object.entries(users)
+			.filter(([id, user]) => !Object.keys(existingChats).includes(id) && id !== userId)
+			.sort(([id1, user1], [id2, user2]) =>
+				user1.name.toLowerCase() < user2.name.toLowerCase() ? -1 : 1
+			)
+			.map(([id, user]) => [id, getEmptyChatForClient(user)])
+	)
+
+	return {
+		...existingChats,
+		...emptyChats,
+	}
 }
 
 export const setTypingStatus = (
@@ -45,18 +60,6 @@ export const setTypingStatus = (
 	typingState.timeout = timeout
 
 	return true
-}
-
-export const getEmptyChat = (userId: string, otherId: string): IStoredChat => {
-	const userIDs = getUserIdTuple(userId, otherId)
-
-	return {
-		userIDs,
-		messages: [],
-		seen: [getEmptySeenSingle(), getEmptySeenSingle()],
-		typingState: [getEmptyTypingState(), getEmptyTypingState()],
-		nextMessageID: 0,
-	}
 }
 
 export const getOrCreateChat = (userId: string, otherId: string): IStoredChat => {
