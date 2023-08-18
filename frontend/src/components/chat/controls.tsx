@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import * as Styled from './controls.styled'
 import { useSocketActions } from '../../context/socket'
 import { TYPING_DELAY } from '../../const'
@@ -11,6 +11,7 @@ export const Controls: React.FC<{ userId: string; disabled?: boolean }> = ({
 	const [canSubmit, setCanSubmit] = useState(false)
 	const [lastTypingUpdate, setLastTypingUpdate] = useState(() => new Date(0))
 	const { sendMessage, startTyping } = useSocketActions()
+	const inputRef = useRef<HTMLInputElement | null>(null)
 
 	const onInput = () => {
 		const now = new Date()
@@ -36,6 +37,7 @@ export const Controls: React.FC<{ userId: string; disabled?: boolean }> = ({
 			sendMessage(userId, content)
 			setInput('')
 			setCanSubmit(false)
+			inputRef?.current?.focus()
 		}
 	}
 
@@ -48,6 +50,7 @@ export const Controls: React.FC<{ userId: string; disabled?: boolean }> = ({
 				type="text"
 				placeholder="Start chatting!"
 				disabled={disabled}
+				ref={inputRef}
 			/>
 			<Styled.SendButton
 				type="submit"

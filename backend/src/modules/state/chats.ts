@@ -2,6 +2,8 @@ import {
 	getChatForClient,
 	getEmptyChat,
 	getEmptyChatForClient,
+	getEmptyMessage,
+	getEmptySeenSingle,
 	getUserIdTupleString,
 } from './chats.util.js'
 import { users } from './users.js'
@@ -68,7 +70,11 @@ export const getOrCreateChat = (userId: string, otherId: string): IStoredChat =>
 	return chats[chatId]
 }
 
-export const addMessage = (chat: IStoredChat, content: string, userId: string): IMessage => {
+export const addMessage = (otherUserId: string, content: string, userId: string): IMessage => {
+	const chat = getOrCreateChat(userId, otherUserId)
+
+	if (!chat) return getEmptyMessage()
+
 	const message: IMessage = {
 		id: chat.nextMessageID,
 		content,
@@ -82,8 +88,18 @@ export const addMessage = (chat: IStoredChat, content: string, userId: string): 
 	return message
 }
 
-export const markAsSeen = (chat: IStoredChat, userId: string, lastSeenMessageID: number): void => {
+export const markAsSeen = (
+	otherUserId: string,
+	userId: string,
+	lastSeenMessageID: number
+): UserSeen => {
+	const chat = getChat(userId, otherUserId)
+
+	if (!chat) return getEmptySeenSingle()
+
 	const index = chat.userIDs.indexOf(userId)
 	chat.seen[index].lastSeenMessageID = lastSeenMessageID
 	chat.seen[index].time = new Date().toISOString()
+
+	return chat.seen[index]
 }

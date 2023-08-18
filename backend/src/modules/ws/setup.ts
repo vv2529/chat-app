@@ -11,6 +11,7 @@ import {
 	markAsSeen,
 	setTypingStatus,
 } from '../state/chats.js'
+import { bots, createBots, emitDisconnect, emitUserOnline } from '../state/bots.js'
 
 export const setupWebsockets = (server: http.Server) => {
 	const io: CustomServer = new Server(server, {
@@ -18,6 +19,8 @@ export const setupWebsockets = (server: http.Server) => {
 			origin: process.env.CLIENT_URL,
 		},
 	})
+
+	createBots(io)
 
 	io.on(CLIENT_EVENTS.connection, (socket) => {
 		socket.on(CLIENT_EVENTS.userOnline, (user) => {
@@ -32,6 +35,8 @@ export const setupWebsockets = (server: http.Server) => {
 				setOnlineStatus(user.id, true)
 				socket.broadcast.emit(SERVER_EVENTS.userOnline, user.id)
 			}
+
+			emitUserOnline(user.id)
 
 			socket.on(CLIENT_EVENTS.startTyping, (otherUserId) => {
 				const chat = getChat(user.id, otherUserId)
@@ -52,27 +57,25 @@ export const setupWebsockets = (server: http.Server) => {
 			})
 
 			socket.on(CLIENT_EVENTS.newMessage, (otherUserId, message) => {
-				const chat = getOrCreateChat(user.id, otherUserId)
+				getOrCreateChat(user.id, otherUserId)
 
-				if (message.trim()) {
-					const addedMessage = addMessage(chat, message, user.id)
+				message = message.trim()
+
+				if (message) {
+					const addedMessage = addMessage(otherUserId, message, user.id)
 
 					setTypingStatus(user.id, otherUserId, false)
-					markAsSeen(chat, user.id, addedMessage.id)
-
-					io.to(otherUserId).emit(SERVER_EVENTS.newMessage, user.id, addedMessage)
+					markAsSeen(otherUserId, user.id, addedMessage.id)
 					io.to(user.id).emit(SERVER_EVENTS.newMessage, otherUserId, addedMessage)
+
+					if (otherUserId in bots) bots[otherUserId].onNewMessage(user.id, addedMessage)
+					else io.to(otherUserId).emit(SERVER_EVENTS.newMessage, user.id, addedMessage)
 				}
 			})
 
 			socket.on(CLIENT_EVENTS.seen, (otherUserId, lastSeenMessageID) => {
-				const chat = getChat(user.id, otherUserId)
-
-				if (chat) {
-					const index = chat.userIDs.indexOf(user.id)
-					markAsSeen(chat, user.id, lastSeenMessageID)
-					socket.to(otherUserId).emit(SERVER_EVENTS.seen, user.id, chat.seen[index])
-				}
+				const seen = markAsSeen(otherUserId, user.id, lastSeenMessageID)
+				socket.to(otherUserId).emit(SERVER_EVENTS.seen, user.id, seen)
 			})
 		})
 
@@ -82,6 +85,8 @@ export const setupWebsockets = (server: http.Server) => {
 			if (user) {
 				setOnlineStatus(user.id, false)
 				socket.broadcast.emit(SERVER_EVENTS.userOffline, user.id)
+
+				emitDisconnect(user.id)
 			}
 		})
 	})

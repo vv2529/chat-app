@@ -42,6 +42,13 @@ export const getEmptySeen = (): ChatSeen => ({
 	other: getEmptySeenSingle(),
 })
 
+export const getEmptyMessage = () => ({
+	id: -1,
+	content: '',
+	time: '',
+	userId: '',
+})
+
 export const getEmptyTypingState = (): UserTyping => ({ isTyping: false })
 
 export const getIndexInTuple = (userId: string, otherId: string): 0 | 1 =>

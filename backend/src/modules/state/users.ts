@@ -2,7 +2,11 @@ import { bots } from './bots.js'
 import { createNewUser } from './users.util.js'
 
 // Do not mutate this state directly, only through actions provided below
-export const users: IUsers = bots
+export const users: IUsers = {}
+
+export const registerBots = () => {
+	Object.assign(users, bots)
+}
 
 export const registerUser = (user: IUserProfile): boolean => {
 	const userCreated = !(user.id in users)

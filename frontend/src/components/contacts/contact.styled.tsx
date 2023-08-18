@@ -2,14 +2,6 @@ import { NavLink } from 'react-router-dom'
 import { css, styled } from 'styled-components'
 import { COLORS, SIZES } from '../../const'
 
-const round = css`
-	position: absolute;
-	bottom: calc(${SIZES.contact.statusSize} / 4);
-	width: ${SIZES.contact.statusSize};
-	height: ${SIZES.contact.statusSize};
-	border-radius: 50%;
-`
-
 export const Contact = styled(NavLink)<{ $online?: boolean }>`
 	position: relative;
 	display: flex;
@@ -25,14 +17,22 @@ export const Contact = styled(NavLink)<{ $online?: boolean }>`
 
 	&::after {
 		content: '';
-		${round}
+		position: absolute;
+		bottom: calc(${SIZES.contact.statusSize} / 4);
+		width: ${SIZES.contact.statusSize};
+		height: ${SIZES.contact.statusSize};
+		border-radius: 50%;
 		left: calc(${SIZES.gutterX} + ${SIZES.contact.size} - ${SIZES.contact.statusSize} * 0.75);
 		background: ${({ $online }) => ($online ? COLORS.onlineStatus : COLORS.offlineStatus)};
 	}
 `
 
 export const Badge = styled('div')`
-	${round}
+	position: absolute;
+	bottom: calc(${SIZES.contact.statusSize} / 4);
+	min-width: ${SIZES.contact.statusSize};
+	height: ${SIZES.contact.statusSize};
+	border-radius: calc(${SIZES.contact.statusSize} / 2);
 	display: flex;
 	justify-content: center;
 	align-items: center;
