@@ -24,6 +24,7 @@ export const ContactsList = styled('div')`
 	flex-grow: 1;
 	width: ${SIZES.contact.widthSm};
 	margin: 0 auto;
+	height: 0;
 	overflow-y: auto;
 
 	@media (min-width: ${BREAKPOINTS.md}px) {

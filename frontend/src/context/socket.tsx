@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { io } from 'socket.io-client'
 import { useCurrentUser } from './current-user'
 import { CustomSocket } from '../types/websocket.types'
 import { useChatActions, useChats } from './chats'
-import { io } from 'socket.io-client'
 import { CLIENT_EVENTS, SERVER_EVENTS } from '../const/socket-events'
-import { WebService } from '../services/web.service'
+import { getUserProfile } from './users.util'
 
 const createActions = (socket: CustomSocket | null, isConnected: boolean) => ({
 	isConnected: () => isConnected,
@@ -73,7 +73,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setSeen(userId, seen, false)
 			})
 
-			socket.emit(CLIENT_EVENTS.userOnline, WebService.getUserProfile(user))
+			socket.emit(CLIENT_EVENTS.userOnline, getUserProfile(user))
 
 			setSocket(socket)
 		}

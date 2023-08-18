@@ -13,7 +13,7 @@ export const useOtherUserId = () => useContext(OtherUserId)
 
 type ParamFlag = 'ok' | 'not-found' | 'empty' | 'invalid'
 
-export const useCheckParam = (atUserId?: string): { flag: ParamFlag; userId: string } => {
+const useCheckParam = (atUserId?: string): { flag: ParamFlag; userId: string } => {
 	const userId = atUserId?.slice(1) || ''
 	const chat = useChat(userId)
 

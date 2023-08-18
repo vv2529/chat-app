@@ -1,7 +1,7 @@
 import { useCurrentUser } from '../context/current-user'
 import { NavigateToRoot } from './navigation'
 
-export const ProtectedRoute: React.FC<{ auth?: JSX.Element; noauth?: JSX.Element }> = ({
+export const ProtectedRoute: React.FC<{ auth?: React.ReactNode; noauth?: React.ReactNode }> = ({
 	auth = <NavigateToRoot />,
 	noauth = <NavigateToRoot />,
 }) => {

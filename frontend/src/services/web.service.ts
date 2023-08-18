@@ -1,38 +1,7 @@
 import { BACKEND_KEYS } from '../const'
 
 export class WebService {
-	static getEmptyUser(): IUser {
-		return {
-			id: '',
-			name: '',
-			avatarURL: '',
-			about: '',
-			online: false,
-		}
-	}
-
-	private static getEmptySeenSingle = (): UserSeen => ({ time: '', lastSeenMessageID: -1 })
-
-	private static getEmptySeen = (): ChatSeen => ({
-		self: this.getEmptySeenSingle(),
-		other: this.getEmptySeenSingle(),
-	})
-
-	static getEmptyChat(userId: string): IChat {
-		return {
-			...this.getEmptyUser(),
-			id: userId,
-			messages: [],
-			seen: this.getEmptySeen(),
-			isTyping: false,
-		}
-	}
-
-	static getUserProfile({ online, ...userProfile }: IUser): IUserProfile {
-		return userProfile
-	}
-
-	static getAntiCacheString() {
+	private static getAntiCacheString() {
 		return String(Math.random()).slice(2)
 	}
 
